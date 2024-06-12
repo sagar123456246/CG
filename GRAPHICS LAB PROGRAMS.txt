@@ -1,0 +1,187 @@
+2D SCALING OF A TRIANGLE
+
+#include <stdio.h>
+
+int main() {
+    float x1, y1, x2, y2, x3, y3, sx, sy;
+    printf("Enter vertices (x1 y1 x2 y2 x3 y3) and scaling factors (sx sy): ");
+    scanf("%f %f %f %f %f %f %f %f", &x1, &y1, &x2, &y2, &x3, &y3, &sx, &sy);
+    x1 *= sx; y1 *= sy; x2 *= sx; y2 *= sy; x3 *= sx; y3 *= sy;
+    printf("Scaled vertices: (%.2f, %.2f) (%.2f, %.2f) (%.2f, %.2f)\n", x1, y1, x2, y2, x3, y3);
+    return 0;
+}
+_____________________________________________________________
+
+2D ROTATION OF A TRIANGLE
+
+#include <stdio.h>
+#include <math.h>
+
+int main() {
+    float x1, y1, x2, y2, x3, y3, angle, rad;
+    printf("Enter vertices (x1 y1 x2 y2 x3 y3) and rotation angle: ");
+    scanf("%f %f %f %f %f %f %f", &x1, &y1, &x2, &y2, &x3, &y3, &angle);
+    rad = angle * M_PI / 180;
+    float cos_a = cos(rad), sin_a = sin(rad);
+    float nx1 = x1 * cos_a - y1 * sin_a, ny1 = x1 * sin_a + y1 * cos_a;
+    float nx2 = x2 * cos_a - y2 * sin_a, ny2 = x2 * sin_a + y2 * cos_a;
+    float nx3 = x3 * cos_a - y3 * sin_a, ny3 = x3 * sin_a + y3 * cos_a;
+    printf("Rotated vertices: (%.2f, %.2f) (%.2f, %.2f) (%.2f, %.2f)\n", nx1, ny1, nx2, ny2, nx3, ny3);
+    return 0;
+}
+___________________________________________________________________
+
+2D TRANSLATION OF A TRIANGLE
+
+#include <stdio.h>
+
+int main() {
+    float x1, y1, x2, y2, x3, y3, tx, ty;
+    printf("Enter vertices (x1 y1 x2 y2 x3 y3) and translation factors (tx ty): ");
+    scanf("%f %f %f %f %f %f %f %f", &x1, &y1, &x2, &y2, &x3, &y3, &tx, &ty);
+    x1 += tx; y1 += ty; x2 += tx; y2 += ty; x3 += tx; y3 += ty;
+    printf("Translated vertices: (%.2f, %.2f) (%.2f, %.2f) (%.2f, %.2f)\n", x1, y1, x2, y2, x3, y3);
+    return 0;
+}
+_____________________________________________________________________
+
+MID-POINT CIRCLE DRAWING
+#include <stdio.h>
+
+void drawCircle(int xc, int yc, int r) {
+    int x = 0, y = r, d = 1 - r;
+    while (x <= y) {
+        printf("(%d, %d)\n", xc + x, yc + y);
+        printf("(%d, %d)\n", xc - x, yc + y);
+        printf("(%d, %d)\n", xc + x, yc - y);
+        printf("(%d, %d)\n", xc - x, yc - y);
+        printf("(%d, %d)\n", xc + y, yc + x);
+        printf("(%d, %d)\n", xc - y, yc + x);
+        printf("(%d, %d)\n", xc + y, yc - x);
+        printf("(%d, %d)\n", xc - y, yc - x);
+        if (d < 0) d += 2 * x + 3;
+        else { d += 2 * (x - y) + 5; y--; }
+        x++;
+    }
+}
+
+int main() {
+    int xc, yc, r;
+    printf("Enter the center (xc yc) and radius (r) of the circle: ");
+    scanf("%d %d %d", &xc, &yc, &r);
+    drawCircle(xc, yc, r);
+    return 0;
+}
+_________________________________________________________________________
+
+REFLECTION ABOUT X-AXIS OF A TRIANGLE
+
+#include <stdio.h>
+
+void reflectX(float *x, float *y) {
+    *y = -*y;[*x=-*x; for Y-axis]
+}
+
+int main() {
+    float x1, y1, x2, y2, x3, y3;
+    
+    // Input vertices of the triangle
+    printf("Enter coordinates of the first vertex (x1 y1): ");
+    scanf("%f %f", &x1, &y1);
+    printf("Enter coordinates of the second vertex (x2 y2): ");
+    scanf("%f %f", &x2, &y2);
+    printf("Enter coordinates of the third vertex (x3 y3): ");
+    scanf("%f %f", &x3, &y3);
+    
+    // Reflect each vertex about the X-axis
+    reflectX(&x1, &y1);[ reflectY(&x1, &y1);]
+    reflectX(&x2, &y2);[ reflectY(&x1, &y1);]for Y axis
+    reflectX(&x3, &y3);[ reflectY(&x1, &y1);]
+    
+    // Output the reflected coordinates
+    printf("Reflected triangle:\n");
+    printf("Vertex 1: (%.2f, %.2f)\n", x1, y1);
+    printf("Vertex 2: (%.2f, %.2f)\n", x2, y2);
+    printf("Vertex 3: (%.2f, %.2f)\n", x3, y3);
+    
+    return 0;
+}
+______________________________________________________________________
+
+X SHEAR TRANSFORMATION
+
+#include <stdio.h>
+
+void xShear(float *x, float *y, float shearFactor) {
+    *x = *x + shearFactor * (*y);[*y=*y+shearFactor*(*x); for Y-shear transformation]
+}
+
+int main() {
+    float x1, y1, x2, y2, x3, y3;
+    float shearFactor;
+    
+    // Input vertices of the triangle
+    printf("Enter coordinates of the first vertex (x1 y1): ");
+    scanf("%f %f", &x1, &y1);
+    printf("Enter coordinates of the second vertex (x2 y2): ");
+    scanf("%f %f", &x2, &y2);
+    printf("Enter coordinates of the third vertex (x3 y3): ");
+    scanf("%f %f", &x3, &y3);
+    
+    // Input shear factor
+    printf("Enter X shear factor: ");
+    scanf("%f", &shearFactor);
+    
+    // Apply X shear transformation
+    xShear(&x1, &y1, shearFactor);[  yShear(&x1, &y1, shearFactor);]
+    xShear(&x2, &y2, shearFactor);[  yShear(&x1, &y1, shearFactor);]for Y axis
+    xShear(&x3, &y3, shearFactor);[  yShear(&x1, &y1, shearFactor);]
+    
+    // Output the transformed coordinates
+    printf("Transformed triangle:\n");
+    printf("Vertex 1: (%.2f, %.2f)\n", x1, y1);
+    printf("Vertex 2: (%.2f, %.2f)\n", x2, y2);
+    printf("Vertex 3: (%.2f, %.2f)\n", x3, y3);
+    
+    return 0;
+}
+________________________________________________________________
+
+BRESSENHAN CIRCLE DRAWING
+
+#include <stdio.h>
+
+void drawCircle(int xc, int yc, int r) {
+    int x = 0, y = r;
+    int d = 3 - 2 * r;
+    
+    while (x <= y) {
+        printf("(%d, %d)\n", xc + x, yc + y);
+        printf("(%d, %d)\n", xc - x, yc + y);
+        printf("(%d, %d)\n", xc + x, yc - y);
+        printf("(%d, %d)\n", xc - x, yc - y);
+        printf("(%d, %d)\n", xc + y, yc + x);
+        printf("(%d, %d)\n", xc - y, yc + x);
+        printf("(%d, %d)\n", xc + y, yc - x);
+        printf("(%d, %d)\n", xc - y, yc - x);
+
+        if (d < 0) {
+            d = d + 4 * x + 6;
+        } else {
+            d = d + 4 * (x - y) + 10;
+            y--;
+        }
+        x++;
+    }
+}
+
+int main() {
+    int xc, yc, r;
+    printf("Enter center coordinates (xc yc) and radius (r) of the circle: ");
+    scanf("%d %d %d", &xc, &yc, &r);
+    
+    drawCircle(xc, yc, r);
+    
+    return 0;
+}
+________________________________________________________________
